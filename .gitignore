@@ -1,0 +1,10 @@
+# ignore environment settings
+.venv
+.vscode
+
+# ignore pychache
+.mypy_cache
+__pycache__
+
+# ignore misc
+*.egg-info
