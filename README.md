@@ -1,54 +1,29 @@
-# Example application code for the python architecture book
+# Architecture Patterns in Python
 
-## Chapters
+by Harry Percival and Bob Gregory
 
-Each chapter has its own branch which contains all the commits for that chapter,
-so it has the state that corresponds to the _end_ of that chapter.  If you want
-to try and code along with a chapter, you'll want to check out the branch for the
-previous chapter.
+## Chapter 1: Domain Modeling
 
-https://github.com/python-leap/code/branches/all
+### Our Business Case
 
+This book follows many examples, but the primary focus of this repo will be the domain model of a furniture retailer.
 
-## Exercises
+When buying an article of furniture the system determines how to get goods to the consumer. The coordination of the furniture is done by **allocating** existing stock or planned stock to a customer's order(s).
 
-Branches for the exercises follow the convention `{chatper_name}_exercise`, eg 
-https://github.com/python-leap/code/tree/chapter_03_service_layer_exercise
+The current system simply allocates existing stock to a customer's order. Here, we can actually assume the effective inventory is comprised of **existing stock** as well as **inbound stock**, this effectively creates the illusion that the business is out of stock less often.
 
+#### Domain Model
 
-## Requirements
+A Domain model represents the design that mental maps the business owners have of their business processes into programmatic code in a clean object oriented form.
 
-* docker with docker-compose
-* for chapters 1 and 2, and optionally for the rest: a local python3.7 virtualenv
+When developing a Domain Model, its key to listen to the business owner's jargon and try your best to encode their sentiment and knowledge into the model.
 
+#### Our Domain Model
 
-## Building the containers
+We have identified the object `OrderLine` which represents an atomic consumer order. An `Orderline` has the following properties: `reference, sku, quantity` which refer to the reference ID of the order, the product being purchased, and the product quantity.
 
-_(this is only required from chapter 3 onwards)_
+Additionally, the `Batch` object is identifies an atomic collection of stock. The properties of which are `reference, sku, quantity, eta`.
 
-```sh
-make build
-make up
-# or
-make all # builds, brings containers up, runs tests
-```
+> Functionally, any number of `OrderLine(s)` can be `allocated` to a `Batch` once the `Orderline.SKU` matches the `Batch.SKU` and the total quantity of all `OrderLine(s)` being `allocated` do not exceed the `Batch.Quantity`.
 
-## Running the tests
-
-```sh
-make test
-# or, to run individual test types
-make unit
-make integration
-make e2e
-# or, if you have a local virtualenv
-make up
-pytest tests/unit
-pytest tests/integration
-pytest tests/e2e
-
-
-## Makefile
-
-There are more useful commands in the makefile, have a look and try them out.
-
+---
