@@ -34,5 +34,10 @@ def test_allocating_to_batch_reduces_available():
     batch = Batch("batch-ref-1", "SKU-Product-Table", 20, eta=date.today())
     orderline = OrderLine('order-id', "SKU-Product-Table", 2)
     batch.allocate(orderline)
-
     assert batch.available == 20-2
+
+
+def test_can_only_deallocate_allocated_lines():
+    batch, unallocated = make_batch_and_line('sku-ikea-birdhouse', 10, 5)
+    batch.deallocate(unallocated)
+    assert batch.available == 10

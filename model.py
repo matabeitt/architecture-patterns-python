@@ -21,10 +21,24 @@ class Batch:
         self.reference = reference
         self.sku = sku
         self.eta = eta
-        self.available = quantity
+        self.stock = quantity
+        self._allocations = set()
 
     def allocate(self, line: OrderLine):
-        self.available -= line.quantity
+        if self.can_allocate(line):
+            self._allocations.add(line)
 
-    def can_allocate(self, line: OrderLine):
+    def can_allocate(self, line: OrderLine) -> bool:
         return self.sku == line.sku and self.available >= line.quantity
+
+    def deallocate(self, line: OrderLine):
+        if line in self._allocations:
+            self._allocations.remove(line)
+
+    @property
+    def allocated(self) -> int:
+        return sum(o.quantity for o in self._allocations)
+
+    @property
+    def available(self) -> int:
+        return self.stock - self.allocated
