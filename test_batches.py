@@ -41,3 +41,10 @@ def test_can_only_deallocate_allocated_lines():
     batch, unallocated = make_batch_and_line('sku-ikea-birdhouse', 10, 5)
     batch.deallocate(unallocated)
     assert batch.available == 10
+
+
+def test_allocation_is_idempotent():
+    batch, line = make_batch_and_line('sku-ikea-chair', 10, 10)
+    batch.allocate(line)
+    batch.allocate(line)
+    assert batch.allocated == 10
