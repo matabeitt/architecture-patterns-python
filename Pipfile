@@ -9,6 +9,7 @@ pylint = "*"
 autopep8 = "*"
 
 [packages]
+flask = "*"
 
 [requires]
 python_version = "3.7"
