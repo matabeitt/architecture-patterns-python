@@ -9,5 +9,5 @@ def allocate_endpoint():
     # TODO: Load All Batches from DB
     # TODO: Call Domain Service
     # TODO: Save Allocation in DB
-    response = make_response(201)
+    response = make_response(jsonify(), 201)
     return response
