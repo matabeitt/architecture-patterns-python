@@ -18,5 +18,5 @@ order_lines = Table(
 )
 
 
-def start_mappters():
+def start_mappers():
     order_lines_mapper = mapper(model.OrderLine, order_lines)
