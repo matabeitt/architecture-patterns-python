@@ -13,8 +13,10 @@ flask = "*"
 sqlalchemy = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.7"
 
 [scripts]
+setup = "export FLASK_APP=app.py"
 server = "flask run"
 test = "pytest"
+clean = "pipenv --rm"
