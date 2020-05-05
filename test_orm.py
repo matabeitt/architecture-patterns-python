@@ -15,3 +15,16 @@ def test_orderline_mapper_can_load_lines(session):
         model.OrderLine("order2", "BLUE-LIPSTICK", 14),
     ]
     assert session.query(model.OrderLine).all() == expected
+
+
+def test_orderline_mapper_can_save_lines(session):
+    orderline = model.OrderLine("order1", "DECORATIVE-WIDGET", 12)
+    session.add(orderline)
+    session.commit()
+
+    rows = list(
+        session.execute(
+            'SELECT order_id, sku, quantity FROM "order_lines"'
+        )
+    )
+    assert rows == [("order1", "DECORATIVE-WIDGET", 12)]
