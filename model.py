@@ -3,9 +3,9 @@ from datetime import date
 from typing import Optional
 
 
-@dataclass(frozen=True)
+@dataclass(unsafe_hash=True)
 class OrderLine:
-    id: str
+    order_id: str
     sku: str
     quantity: int
 
