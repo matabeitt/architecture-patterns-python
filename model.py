@@ -1,6 +1,13 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
+from typing import Optional, List
+
+
+class OutOfStock(Exception):
+    pass
+
+
+>>>>>> > chapter_01
 
 
 @dataclass(frozen=True)
@@ -42,3 +49,27 @@ class Batch:
     @property
     def available(self) -> int:
         return self.stock - self.allocated
+
+    def __eq__(self, other):
+        if not isinstance(other, Batch):
+            return False
+        return other.reference == self.reference
+
+    def __hash__(self):
+        return hash(self.reference)
+
+    def __gt__(self, other):
+        if self.eta is None:
+            return False
+        if other.eta is None:
+            return True
+        return self.eta > other.eta
+
+
+def allocate(line: OrderLine, batches: List[Batch]) -> str:
+    try:
+        batch = next(b for b in sorted(batches) if b.can_allocate(line))
+        batch.allocate(line)
+    except StopIteration:
+        raise OutOfStock(f'Out Of Stock: {line.sku}')
+    return batch.reference
