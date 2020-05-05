@@ -3,7 +3,8 @@ from model import OrderLine
 app = Flask(__name__)
 
 
-@app.route('/allocate')
+@app.route('/', methods=['POST'])
+@app.route('/allocate', methods=['POST'])
 def allocate_endpoint():
     # TODO: Extract OrderLine data from query params
     # TODO: Load All Batches from DB
