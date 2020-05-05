@@ -3,6 +3,20 @@ from datetime import date
 from typing import Optional
 
 
+class OutOfStock(Exception):
+    pass
+
+
+def allocate(line: OrderLine, batches: List[Batch]) -> str:
+    try:
+        batch = next(
+            b for b in sorted(batches) if b.can_allocate(line)
+        )
+        return batch.reference
+    except StopIteration:
+        raise OutOfStock(f'Out of stock for sky {line.sku}')
+
+
 @dataclass(unsafe_hash=True)
 class OrderLine:
     order_id: str
